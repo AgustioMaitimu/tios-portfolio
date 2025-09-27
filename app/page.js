@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect } from 'react'
-import LiquidGlass from 'liquid-glass-react'
+import dynamic from 'next/dynamic'
+const LiquidGlass = dynamic(() => import('liquid-glass-react'), { ssr: false })
 
 export default function Home() {
   useEffect(() => {

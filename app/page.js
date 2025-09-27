@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import LiquidGlass from 'liquid-glass-react'
 
 export default function Home() {
   useEffect(() => {
@@ -356,28 +357,36 @@ export default function Home() {
 
       {/* Pill Navigation */}
       <div className="pointer-events-none fixed right-0 bottom-0 left-0 z-50 flex justify-center p-4 sm:p-6">
-        <nav
-          id="pill-nav"
-          className="pointer-events-auto flex items-center gap-x-1 rounded-full border border-white/10 bg-gray-900/80 px-3 py-2 shadow-lg backdrop-blur-md"
-        >
-          <a
-            href="#about"
-            className="rounded-full px-4 py-1.5 text-sm font-medium text-gray-300 transition-colors hover:bg-white/10 hover:text-white focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none"
+        <nav id="pill-nav" className="pointer-events-auto">
+          <LiquidGlass
+            displacementScale={64}
+            blurAmount={0.1}
+            saturation={130}
+            aberrationIntensity={2}
+            elasticity={0.3}
+            cornerRadius={999}
+            padding="8px 12px"
+            className="flex items-center gap-x-1"
           >
-            About
-          </a>
-          <a
-            href="#projects"
-            className="rounded-full px-4 py-1.5 text-sm font-medium text-gray-300 transition-colors hover:bg-white/10 hover:text-white focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none"
-          >
-            Projects
-          </a>
-          <a
-            href="#contact"
-            className="rounded-full px-4 py-1.5 text-sm font-medium text-gray-300 transition-colors hover:bg-white/10 hover:text-white focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none"
-          >
-            Contact
-          </a>
+            <a
+              href="#about"
+              className="rounded-full px-4 py-1.5 text-sm font-medium text-gray-300 transition-colors hover:bg-white/10 hover:text-white focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none"
+            >
+              About
+            </a>
+            <a
+              href="#projects"
+              className="rounded-full px-4 py-1.5 text-sm font-medium text-gray-300 transition-colors hover:bg-white/10 hover:text-white focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none"
+            >
+              Projects
+            </a>
+            <a
+              href="#contact"
+              className="rounded-full px-4 py-1.5 text-sm font-medium text-gray-300 transition-colors hover:bg-white/10 hover:text-white focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none"
+            >
+              Contact
+            </a>
+          </LiquidGlass>
         </nav>
       </div>
     </>

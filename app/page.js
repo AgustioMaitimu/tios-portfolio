@@ -366,6 +366,7 @@ export default function Home() {
             elasticity={0.3}
             cornerRadius={999}
             padding="8px 12px"
+            overLight
             className="flex items-center gap-x-1"
           >
             <a

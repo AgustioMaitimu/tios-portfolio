@@ -149,16 +149,25 @@ export default function Home() {
       rootMargin: '0px 0px -15% 0px',
       threshold: 0.22,
     }
+    let lastScrollY = window.scrollY
+    let scrollDir = 'down'
+
     const fadeInObserver = new IntersectionObserver((entries) => {
       const vh = window.innerHeight || document.documentElement.clientHeight
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
+          if (scrollDir === 'up') {
+            entry.target.classList.add('fade-in-no-anim')
+          } else {
+            entry.target.classList.remove('fade-in-no-anim')
+          }
           entry.target.classList.add('is-visible')
         } else {
           // Only reset once element is fully offscreen (hysteresis to avoid early disappear)
           const rect = entry.boundingClientRect
           if (rect.bottom <= 0 || rect.top >= vh) {
             entry.target.classList.remove('is-visible')
+            entry.target.classList.remove('fade-in-no-anim')
           }
         }
       })
@@ -167,11 +176,17 @@ export default function Home() {
       const vh = window.innerHeight || document.documentElement.clientHeight
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
+          if (scrollDir === 'up') {
+            entry.target.classList.add('fade-in-no-anim')
+          } else {
+            entry.target.classList.remove('fade-in-no-anim')
+          }
           entry.target.classList.add('is-visible')
         } else {
           const rect = entry.boundingClientRect
           if (rect.bottom <= 0 || rect.top >= vh) {
             entry.target.classList.remove('is-visible')
+            entry.target.classList.remove('fade-in-no-anim')
           }
         }
       })
@@ -191,6 +206,7 @@ export default function Home() {
       fadeTargets.forEach((el) => {
         const rect = el.getBoundingClientRect()
         if (rect.top < vh * 0.85 && rect.bottom > 0) {
+          el.classList.add('fade-in-no-anim')
           el.classList.add('is-visible')
         }
       })
@@ -198,6 +214,7 @@ export default function Home() {
       lateTargets.forEach((el) => {
         const rect = el.getBoundingClientRect()
         if (rect.top < vh * 0.8 && rect.bottom > 0) {
+          el.classList.add('fade-in-no-anim')
           el.classList.add('is-visible')
         }
       })
@@ -276,6 +293,11 @@ export default function Home() {
     }
     const onScroll = () =>
       window.requestAnimationFrame(() => {
+        const y = window.scrollY
+        if (y > lastScrollY) scrollDir = 'down'
+        else if (y < lastScrollY) scrollDir = 'up'
+        lastScrollY = y
+
         updateActiveNav()
         resetOffscreenAnimations()
         ensureBottomVisible()

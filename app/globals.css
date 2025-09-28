@@ -73,6 +73,11 @@ button:focus-visible {
       var(--fade-ease, ease-out)
       var(--fade-delay, 0ms) both;
   }
+  /* Force no-animation reveal (used on upward scroll re-entries and initial prime) */
+  .fade-in-no-anim {
+    --fade-duration: 0ms !important;
+    --fade-delay: 0ms !important;
+  }
 }
 
 @keyframes fade-in-up {

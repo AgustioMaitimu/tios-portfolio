@@ -372,10 +372,10 @@ export default function Page() {
 
           <main>
             {/* About Section */}
-            <section id="about" className="reveal py-24 md:py-32">
-              <div className="space-y-12">
+            <section id="about" className="reveal py-16 md:py-32">
+              <div className="mx-auto max-w-2xl space-y-8 md:space-y-12">
                 <p
-                  className={`text-lg leading-relaxed font-medium md:text-xl ${
+                  className={`mx-auto max-w-[34ch] sm:max-w-[50ch] text-base sm:text-lg md:text-xl leading-relaxed font-medium ${
                     isDark ? 'text-zinc-300' : 'text-slate-800'
                   }`}
                 >
@@ -387,13 +387,13 @@ export default function Page() {
                   deliver products in fast-paced, iterative cycles.
                 </p>
                 <div
-                  className={`space-y-8 border-l-2 pl-8 ${
+                  className={`mx-auto max-w-[48ch] sm:max-w-[60ch] space-y-6 border-l pl-4 sm:pl-6 md:border-l-2 md:pl-8 ${
                     isDark ? 'border-zinc-700' : 'border-gray-200'
                   }`}
                 >
                   <div>
                     <h3
-                      className={`font-roboto-mono text-xl font-medium tracking-tight ${
+                      className={`font-roboto-mono text-lg sm:text-xl font-medium tracking-tight ${
                         isDark ? 'text-zinc-100' : 'text-black'
                       }`}
                     >
@@ -407,7 +407,9 @@ export default function Page() {
                       Mar – Dec 2025
                     </p>
                     <p
-                      className={`mt-2 ${isDark ? 'text-zinc-400' : 'text-gray-600'}`}
+                      className={`mt-2 text-sm sm:text-base ${
+                        isDark ? 'text-zinc-400' : 'text-gray-600'
+                      }`}
                     >
                       Enrolled in a 10-month program learning Apple ecosystem
                       development, design thinking, and professional skills.
@@ -419,7 +421,7 @@ export default function Page() {
                   </div>
                   <div>
                     <h3
-                      className={`font-roboto-mono text-xl font-medium tracking-tight ${
+                      className={`font-roboto-mono text-lg sm:text-xl font-medium tracking-tight ${
                         isDark ? 'text-zinc-100' : 'text-black'
                       }`}
                     >
@@ -433,7 +435,9 @@ export default function Page() {
                       Sep 2023 – Oct 2024
                     </p>
                     <p
-                      className={`mt-2 ${isDark ? 'text-zinc-400' : 'text-gray-600'}`}
+                      className={`mt-2 text-sm sm:text-base ${
+                        isDark ? 'text-zinc-400' : 'text-gray-600'
+                      }`}
                     >
                       Self-taught in frontend web development with React,
                       Next.js, Tailwind CSS, and GitHub workflows. Built and
@@ -450,9 +454,9 @@ export default function Page() {
               <div className="space-y-24 md:space-y-32">
                 {/* Project 1: Keepsake */}
                 <div className="reveal">
-                  <div className="mb-8 flex items-baseline justify-between">
+                  <div className="mb-8 flex items-baseline justify-center md:justify-between">
                     <h3
-                      className={`font-syne text-5xl font-extrabold md:text-7xl ${
+                      className={`font-syne text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight text-center md:text-left ${
                         isDark ? 'text-zinc-100' : ''
                       }`}
                     >
@@ -534,9 +538,9 @@ export default function Page() {
 
                 {/* Project 2: SwiSekai */}
                 <div className="reveal">
-                  <div className="mb-8 flex items-baseline justify-between">
+                  <div className="mb-8 flex items-baseline justify-center md:justify-between">
                     <h3
-                      className={`font-syne text-5xl font-extrabold md:text-7xl ${
+                      className={`font-syne text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight text-center md:text-left ${
                         isDark ? 'text-zinc-100' : ''
                       }`}
                     >
@@ -614,9 +618,9 @@ export default function Page() {
 
                 {/* Project 3: Memmy */}
                 <div className="reveal">
-                  <div className="mb-8 flex items-baseline justify-between">
+                  <div className="mb-8 flex items-baseline justify-center md:justify-between">
                     <h3
-                      className={`font-syne text-5xl font-extrabold md:text-7xl ${
+                      className={`font-syne text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight text-center md:text-left ${
                         isDark ? 'text-zinc-100' : ''
                       }`}
                     >
@@ -699,9 +703,9 @@ export default function Page() {
             </section>
 
             {/* Contact Section */}
-            <section id="contact" className="py-24 text-center md:py-48">
+            <section id="contact" className="py-20 text-center md:py-48">
               <h2
-                className={`reveal font-syne mb-8 text-5xl leading-tight font-extrabold tracking-tighter md:text-7xl ${
+                className={`reveal font-syne mb-8 text-4xl sm:text-5xl md:text-7xl leading-tight font-extrabold tracking-tighter ${
                   isDark ? 'text-zinc-100' : ''
                 }`}
                 data-reveal-threshold="0.5"
@@ -713,7 +717,7 @@ export default function Page() {
               <div className="flex flex-col items-center justify-center gap-6">
                 <a
                   href="mailto:agustiomaitimu.apple@gmail.com"
-                  className={`reveal link-underline text-2xl font-medium md:text-3xl ${
+                  className={`reveal link-underline text-xl sm:text-2xl md:text-3xl font-medium ${
                     isDark ? 'text-zinc-300' : ''
                   }`}
                   data-reveal-threshold="0.6"
@@ -721,13 +725,12 @@ export default function Page() {
                   agustiomaitimu.apple@gmail.com
                 </a>
                 <a
-                  href="https://youtube.com"
-                  className={`reveal link-underline text-xl font-medium md:text-2xl ${
+                  href="/resume.pdf"
+                  download
+                  className={`reveal link-underline text-lg sm:text-xl md:text-2xl font-medium ${
                     isDark ? 'text-zinc-400' : ''
                   }`}
                   data-reveal-threshold="0.7"
-                  target="_blank"
-                  rel="noopener noreferrer"
                 >
                   Download Résumé
                 </a>

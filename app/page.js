@@ -1,8 +1,10 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import Image from 'next/image'
 
 export default function Page() {
@@ -10,6 +12,15 @@ export default function Page() {
   const [localTime, setLocalTime] = useState('')
   const [viewerOpen, setViewerOpen] = useState(false)
   const [viewerSrc, setViewerSrc] = useState('/swisekai.png')
+  const [scale, setScale] = useState(1)
+  const [translate, setTranslate] = useState({ x: 0, y: 0 })
+  const containerRef = useRef(null)
+  const imgRef = useRef(null)
+  const pointersRef = useRef(new Map())
+  const lastPinchRef = useRef(null)
+  const isPanningRef = useRef(false)
+  const lastPanRef = useRef({ x: 0, y: 0 })
+  const lastTapRef = useRef(0)
   // IntersectionObserver for reveal animations
   useEffect(() => {
     const ios = []
@@ -108,6 +119,8 @@ export default function Page() {
 
   const openViewer = (src) => {
     setViewerSrc(src || '/swisekai.png')
+    setScale(1)
+    setTranslate({ x: 0, y: 0 })
     setViewerOpen(true)
   }
 
@@ -126,9 +139,134 @@ export default function Page() {
     const onKey = (e) => {
       if (e.key === 'Escape') setViewerOpen(false)
     }
+    const body = document.body
+    const prevOverflow = body.style.overflow
+    const prevTouchAction = body.style.touchAction
+    body.style.overflow = 'hidden'
+    body.style.touchAction = 'none'
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      body.style.overflow = prevOverflow
+      body.style.touchAction = prevTouchAction
+    }
   }, [viewerOpen])
+
+  // Helpers for zoom/pan bounds
+  const clamp = (n, min, max) => Math.max(min, Math.min(max, n))
+  const clampTranslate = (nx, ny, s) => {
+    const el = containerRef.current
+    if (!el) return { x: nx, y: ny }
+    const rect = el.getBoundingClientRect()
+    const maxX = ((s - 1) * rect.width) / 2
+    const maxY = ((s - 1) * rect.height) / 2
+    return { x: clamp(nx, -maxX, maxX), y: clamp(ny, -maxY, maxY) }
+  }
+
+  const handleWheel = (e) => {
+    e.preventDefault()
+    const delta = -e.deltaY
+    const next = clamp(scale + delta * 0.0015, 1, 4)
+    if (next === scale) return
+    setScale(next)
+    // Slightly adjust translate toward cursor for nicer feel
+    const rect = containerRef.current?.getBoundingClientRect()
+    if (rect) {
+      const cx = e.clientX - rect.left - rect.width / 2
+      const cy = e.clientY - rect.top - rect.height / 2
+      const factor = 0.1 * (next - scale)
+      const { x, y } = clampTranslate(
+        translate.x - cx * factor,
+        translate.y - cy * factor,
+        next,
+      )
+      setTranslate({ x, y })
+    }
+  }
+
+  const onPointerDown = (e) => {
+    const target = containerRef.current
+    if (!target) return
+    target.setPointerCapture?.(e.pointerId)
+    // Double-tap detection for mobile
+    const now = Date.now()
+    if (pointersRef.current.size === 0 && now - lastTapRef.current < 300) {
+      const next = scale > 1 ? 1 : 2.5
+      setScale(next)
+      setTranslate({ x: 0, y: 0 })
+      isPanningRef.current = false
+      lastTapRef.current = 0
+      return
+    }
+    lastTapRef.current = now
+    pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+    if (pointersRef.current.size === 2) {
+      const pts = Array.from(pointersRef.current.values())
+      const dx = pts[0].x - pts[1].x
+      const dy = pts[0].y - pts[1].y
+      const centerX = (pts[0].x + pts[1].x) / 2
+      const centerY = (pts[0].y + pts[1].y) / 2
+      lastPinchRef.current = {
+        distance: Math.hypot(dx, dy),
+        centerX,
+        centerY,
+        scale,
+        translate,
+      }
+    } else if (scale > 1) {
+      isPanningRef.current = true
+      lastPanRef.current = { x: e.clientX, y: e.clientY }
+    }
+  }
+
+  const onPointerMove = (e) => {
+    if (!pointersRef.current.has(e.pointerId)) return
+    pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+    if (pointersRef.current.size === 2 && lastPinchRef.current) {
+      const pts = Array.from(pointersRef.current.values())
+      const dx = pts[0].x - pts[1].x
+      const dy = pts[0].y - pts[1].y
+      const centerX = (pts[0].x + pts[1].x) / 2
+      const centerY = (pts[0].y + pts[1].y) / 2
+      const newDist = Math.hypot(dx, dy)
+      const base = lastPinchRef.current
+      let nextScale = clamp((newDist / base.distance) * base.scale, 1, 4)
+      setScale(nextScale)
+      const dxC = centerX - base.centerX
+      const dyC = centerY - base.centerY
+      const { x, y } = clampTranslate(
+        base.translate.x + dxC,
+        base.translate.y + dyC,
+        nextScale,
+      )
+      setTranslate({ x, y })
+    } else if (isPanningRef.current) {
+      const dx = e.clientX - lastPanRef.current.x
+      const dy = e.clientY - lastPanRef.current.y
+      lastPanRef.current = { x: e.clientX, y: e.clientY }
+      const { x, y } = clampTranslate(translate.x + dx, translate.y + dy, scale)
+      setTranslate({ x, y })
+    }
+  }
+
+  const onPointerUp = (e) => {
+    pointersRef.current.delete(e.pointerId)
+    if (pointersRef.current.size < 2) {
+      lastPinchRef.current = null
+    }
+    if (pointersRef.current.size === 0) {
+      isPanningRef.current = false
+    }
+  }
+
+  const onDouble = (e) => {
+    e.preventDefault()
+    const next = scale > 1 ? 1 : 2.5
+    setScale(next)
+    setTranslate({ x: 0, y: 0 })
+  }
 
   return (
     <div className={isDark ? 'theme-dark' : ''}>
@@ -364,6 +502,33 @@ export default function Page() {
                           zoom &amp; tap-to-focus.
                         </li>
                       </ul>
+                      <div className="mt-6 flex gap-3">
+                        <a
+                          href="#"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="View Keepsake"
+                          className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors focus:ring-2 focus:outline-none ${
+                            isDark
+                              ? 'bg-white text-black hover:bg-zinc-200 focus:ring-white/60'
+                              : 'bg-black text-white hover:bg-neutral-900 focus:ring-black/50'
+                          }`}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 384 512"
+                            className="h-4 w-4"
+                            aria-hidden="true"
+                            focusable="false"
+                          >
+                            <path
+                              fill="currentColor"
+                              d="M318.7 268.7c-.3-37.7 16.4-66.2 49.9-87.1-18.8-27.3-47.3-42.3-85.2-45.3-35.7-2.8-74.6 20.9-88.9 20.9-15 0-49.6-20.1-76.7-20.1C64.9 138.1 8 184.6 8 273.7c0 27.1 4.9 55 14.8 83.7 13.2 37.7 60.6 130 109.7 128.4 25.7-.6 44-18.3 77.6-18.3 32.8 0 49.6 18.3 76.7 18.3 49.5-.7 92.8-85.7 105.6-123.5-67.9-32.1-73.7-94-73.7-93.6zM255.3 81.9c27.1-32.4 24.6-61.9 23.7-72-23 1.3-49.7 15.5-64.9 33.6-17.8 20.6-28.2 45.8-26 72.7 24.9 1.9 48.7-11 67.2-34.3z"
+                            />
+                          </svg>
+                          <span>View On Appstore</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -420,6 +585,33 @@ export default function Page() {
                         projects.
                       </li>
                     </ul>
+                    <div className="mt-6 flex justify-end gap-3">
+                      <a
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="View SwiSekai"
+                        className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors focus:ring-2 focus:outline-none ${
+                          isDark
+                            ? 'bg-white text-black hover:bg-zinc-200 focus:ring-white/60'
+                            : 'bg-black text-white hover:bg-neutral-900 focus:ring-black/50'
+                        }`}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 384 512"
+                          className="h-4 w-4"
+                          aria-hidden="true"
+                          focusable="false"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M318.7 268.7c-.3-37.7 16.4-66.2 49.9-87.1-18.8-27.3-47.3-42.3-85.2-45.3-35.7-2.8-74.6 20.9-88.9 20.9-15 0-49.6-20.1-76.7-20.1C64.9 138.1 8 184.6 8 273.7c0 27.1 4.9 55 14.8 83.7 13.2 37.7 60.6 130 109.7 128.4 25.7-.6 44-18.3 77.6-18.3 32.8 0 49.6 18.3 76.7 18.3 49.5-.7 92.8-85.7 105.6-123.5-67.9-32.1-73.7-94-73.7-93.6zM255.3 81.9c27.1-32.4 24.6-61.9 23.7-72-23 1.3-49.7 15.5-64.9 33.6-17.8 20.6-28.2 45.8-26 72.7 24.9 1.9 48.7-11 67.2-34.3z"
+                          />
+                        </svg>
+                        <span>View On Appstore</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
 
@@ -476,6 +668,33 @@ export default function Page() {
                           linking.
                         </li>
                       </ul>
+                      <div className="mt-6 flex gap-3">
+                        <a
+                          href="#"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="View Memmy"
+                          className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors focus:ring-2 focus:outline-none ${
+                            isDark
+                              ? 'bg-white text-black hover:bg-zinc-200 focus:ring-white/60'
+                              : 'bg-black text-white hover:bg-neutral-900 focus:ring-black/50'
+                          }`}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 384 512"
+                            className="h-4 w-4"
+                            aria-hidden="true"
+                            focusable="false"
+                          >
+                            <path
+                              fill="currentColor"
+                              d="M318.7 268.7c-.3-37.7 16.4-66.2 49.9-87.1-18.8-27.3-47.3-42.3-85.2-45.3-35.7-2.8-74.6 20.9-88.9 20.9-15 0-49.6-20.1-76.7-20.1C64.9 138.1 8 184.6 8 273.7c0 27.1 4.9 55 14.8 83.7 13.2 37.7 60.6 130 109.7 128.4 25.7-.6 44-18.3 77.6-18.3 32.8 0 49.6 18.3 76.7 18.3 49.5-.7 92.8-85.7 105.6-123.5-67.9-32.1-73.7-94-73.7-93.6zM255.3 81.9c27.1-32.4 24.6-61.9 23.7-72-23 1.3-49.7 15.5-64.9 33.6-17.8 20.6-28.2 45.8-26 72.7 24.9 1.9 48.7-11 67.2-34.3z"
+                            />
+                          </svg>
+                          <span>View On Appstore</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -556,49 +775,74 @@ export default function Page() {
               </p>
             </footer>
           </main>
-          {viewerOpen && (
-            // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-            <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
-              onClick={closeViewer}
-              role="dialog"
-              aria-modal="true"
-              aria-label="Image viewer"
-            >
-              <div
-                className="relative w-full max-w-5xl"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
+          {viewerOpen && typeof window !== 'undefined'
+            ? createPortal(
+                <div
+                  className="fixed inset-0 z-[100] flex h-full w-full items-center justify-center bg-black/90 backdrop-blur-sm"
                   onClick={closeViewer}
-                  aria-label="Close image viewer"
-                  className="absolute -top-3 -right-3 rounded-full bg-white/10 p-2 text-white backdrop-blur hover:bg-white/20 focus:ring-2 focus:ring-white/60 focus:outline-none"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Image viewer"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5"
+                  <div
+                    ref={containerRef}
+                    className="relative flex h-full w-full touch-none items-center justify-center"
+                    onClick={(e) => e.stopPropagation()}
+                    onWheel={handleWheel}
+                    onPointerDown={onPointerDown}
+                    onPointerMove={onPointerMove}
+                    onPointerUp={onPointerUp}
+                    onPointerCancel={onPointerUp}
+                    onDoubleClick={onDouble}
                   >
-                    <path d="M18 6 6 18" />
-                    <path d="m6 6 12 12" />
-                  </svg>
-                </button>
-                <Image
-                  src={viewerSrc}
-                  alt="Image preview"
-                  width={1600}
-                  height={1200}
-                  className="h-auto max-h-[85vh] w-full rounded-lg object-contain"
-                  priority
-                />
-              </div>
-            </div>
-          )}
+                    <button
+                      onClick={closeViewer}
+                      aria-label="Close image viewer"
+                      className="absolute top-4 right-4 z-[101] rounded-full bg-white/10 p-2 text-white backdrop-blur hover:bg-white/20 focus:ring-2 focus:ring-white/60 focus:outline-none"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-5 w-5"
+                      >
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                      </svg>
+                    </button>
+                    <Image
+                      ref={imgRef}
+                      src={viewerSrc}
+                      alt="Image preview"
+                      width={1600}
+                      height={1200}
+                      draggable={false}
+                      className={`${
+                        scale > 1
+                          ? isPanningRef.current
+                            ? 'cursor-grabbing'
+                            : 'cursor-grab'
+                          : 'cursor-zoom-in'
+                      } max-h-[90vh] max-w-[95vw] rounded-lg object-contain select-none`}
+                      style={{
+                        transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
+                        transition:
+                          isPanningRef.current || pointersRef.current.size === 2
+                            ? 'none'
+                            : 'transform 0.15s ease-out',
+                        touchAction: 'none',
+                      }}
+                      priority
+                    />
+                  </div>
+                </div>,
+                document.body,
+              )
+            : null}
         </div>
       </div>
     </div>

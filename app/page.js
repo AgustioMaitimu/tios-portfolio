@@ -1,10 +1,15 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 export default function Page() {
   const [isDark, setIsDark] = useState(true)
   const [localTime, setLocalTime] = useState('')
+  const [viewerOpen, setViewerOpen] = useState(false)
+  const [viewerSrc, setViewerSrc] = useState('/swisekai.png')
   // IntersectionObserver for reveal animations
   useEffect(() => {
     const ios = []
@@ -100,6 +105,22 @@ export default function Page() {
       return next
     })
   }
+
+  const openViewer = (src) => {
+    setViewerSrc(src || '/swisekai.png')
+    setViewerOpen(true)
+  }
+
+  const closeViewer = () => setViewerOpen(false)
+
+  useEffect(() => {
+    if (!viewerOpen) return
+    const onKey = (e) => {
+      if (e.key === 'Escape') setViewerOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [viewerOpen])
 
   return (
     <div className={isDark ? 'theme-dark' : ''}>
@@ -301,38 +322,41 @@ export default function Page() {
                     </span>
                   </div>
                   <div className="mb-8">
-                    <img
-                      src="https://placehold.co/1000x750/27272A/E5E7EB?text=Keepsake"
-                      alt="Keepsake project placeholder"
+                    <Image
+                      src="/keepsake.png"
+                      alt="Keepsake project image"
+                      width={1000}
+                      height={750}
+                      onClick={() => openViewer('/keepsake.png')}
                       className="aspect-[4/3] w-full cursor-pointer rounded-xl object-cover transition-transform duration-500 hover:scale-[1.02]"
                     />
-                  </div>
-                  <div className="max-w-2xl">
-                    <p
-                      className={`mb-6 text-lg ${isDark ? 'text-zinc-400' : 'text-gray-600'}`}
-                    >
-                      An iOS camera app that uses customizable Home Screen
-                      widgets to organize photos into specific, per-widget
-                      albums.
-                    </p>
-                    <ul
-                      className={`list-inside list-disc space-y-2 ${
-                        isDark ? 'text-zinc-400' : 'text-slate-700'
-                      }`}
-                    >
-                      <li>
-                        Built a customizable Home Screen widget with deep
-                        linking.
-                      </li>
-                      <li>
-                        Utilized AppIntents &amp; App Groups for robust data
-                        sharing.
-                      </li>
-                      <li>
-                        Implemented advanced camera features like multi-lens
-                        zoom &amp; tap-to-focus.
-                      </li>
-                    </ul>
+                    <div className="mt-8 max-w-2xl">
+                      <p
+                        className={`mb-6 text-lg ${isDark ? 'text-zinc-400' : 'text-gray-600'}`}
+                      >
+                        An iOS camera app that uses customizable Home Screen
+                        widgets to organize photos into specific, per-widget
+                        albums.
+                      </p>
+                      <ul
+                        className={`list-inside list-disc space-y-2 ${
+                          isDark ? 'text-zinc-400' : 'text-slate-700'
+                        }`}
+                      >
+                        <li>
+                          Built a customizable Home Screen widget with deep
+                          linking.
+                        </li>
+                        <li>
+                          Utilized AppIntents &amp; App Groups for robust data
+                          sharing.
+                        </li>
+                        <li>
+                          Implemented advanced camera features like multi-lens
+                          zoom &amp; tap-to-focus.
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
 
@@ -355,9 +379,12 @@ export default function Page() {
                     </span>
                   </div>
                   <div className="mb-8">
-                    <img
-                      src="https://placehold.co/1000x750/27272A/E5E7EB?text=SwiSekai"
-                      alt="SwiSekai project placeholder"
+                    <Image
+                      src="/swisekai.png"
+                      alt="SwiSekai project image"
+                      width={1000}
+                      height={750}
+                      onClick={() => openViewer('/swisekai.png')}
                       className="aspect-[4/3] w-full cursor-pointer rounded-xl object-cover transition-transform duration-500 hover:scale-[1.02]"
                     />
                   </div>
@@ -407,37 +434,41 @@ export default function Page() {
                     </span>
                   </div>
                   <div className="mb-8">
-                    <img
-                      src="https://placehold.co/1000x750/27272A/E5E7EB?text=Memmy"
-                      alt="Memmy project placeholder"
+                    <Image
+                      src="/memmy.png"
+                      alt="Memmy project image"
+                      width={1000}
+                      height={750}
+                      onClick={() => openViewer('/memmy.png')}
                       className="aspect-[4/3] w-full cursor-pointer rounded-xl object-cover transition-transform duration-500 hover:scale-[1.02]"
                     />
-                  </div>
-                  <div className="max-w-2xl">
-                    <p
-                      className={`mb-6 text-lg ${isDark ? 'text-zinc-400' : 'text-gray-600'}`}
-                    >
-                      A solo-developed iOS checklist app with a configurable
-                      Home Screen widget for glanceable information and quick
-                      access.
-                    </p>
-                    <ul
-                      className={`list-inside list-disc space-y-2 ${
-                        isDark ? 'text-zinc-400' : 'text-slate-700'
-                      }`}
-                    >
-                      <li>
-                        Developed the full app using SwiftData for persistence.
-                      </li>
-                      <li>
-                        Implemented search/sort, batch delete, and daily reset
-                        features.
-                      </li>
-                      <li>
-                        Created a configurable Home Screen widget for deep
-                        linking.
-                      </li>
-                    </ul>
+                    <div className="mt-8 max-w-2xl">
+                      <p
+                        className={`mb-6 text-lg ${isDark ? 'text-zinc-400' : 'text-gray-600'}`}
+                      >
+                        A solo-developed iOS checklist app with a configurable
+                        Home Screen widget for glanceable information and quick
+                        access.
+                      </p>
+                      <ul
+                        className={`list-inside list-disc space-y-2 ${
+                          isDark ? 'text-zinc-400' : 'text-slate-700'
+                        }`}
+                      >
+                        <li>
+                          Developed the full app using SwiftData for
+                          persistence.
+                        </li>
+                        <li>
+                          Implemented search/sort, batch delete, and daily reset
+                          features.
+                        </li>
+                        <li>
+                          Created a configurable Home Screen widget for deep
+                          linking.
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -517,6 +548,49 @@ export default function Page() {
               </p>
             </footer>
           </main>
+          {viewerOpen && (
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+              onClick={closeViewer}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Image viewer"
+            >
+              <div
+                className="relative w-full max-w-5xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={closeViewer}
+                  aria-label="Close image viewer"
+                  className="absolute -top-3 -right-3 rounded-full bg-white/10 p-2 text-white backdrop-blur hover:bg-white/20 focus:ring-2 focus:ring-white/60 focus:outline-none"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5"
+                  >
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </button>
+                <Image
+                  src={viewerSrc}
+                  alt="Image preview"
+                  width={1600}
+                  height={1200}
+                  className="h-auto max-h-[85vh] w-full rounded-lg object-contain"
+                  priority
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

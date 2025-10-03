@@ -277,7 +277,7 @@ export default function Page() {
       >
         <div className="mx-auto max-w-3xl px-6 md:px-8">
           {/* Header */}
-          <header className="flex flex-wrap items-center gap-3 py-6 justify-center md:justify-between">
+          <header className="flex flex-wrap items-center justify-center gap-3 py-6 md:justify-between">
             <div className="w-full text-center md:w-auto md:text-left">
               <span
                 className={`font-syne text-2xl font-extrabold ${
@@ -575,10 +575,8 @@ export default function Page() {
                         Built the YAML-to-content pipeline for learning
                         materials.
                       </li>
-                      <li>
-                        Created a SwiftData model with Keychain-secured API key
-                        storage.
-                      </li>
+                      <li>Built a SwiftData model to persist user progress.</li>
+                      <li>Secured AI companion API keys using Keychain.</li>
                       <li>
                         Implemented core navigation and a responsive UI for
                         projects.

@@ -302,7 +302,7 @@ export default function Page() {
                   </div>
                   <div className="mb-8">
                     <img
-                      src="https://placehold.co/1000x750/e5e7eb/6b7280?text=Keepsake"
+                      src="https://placehold.co/1000x750/27272A/E5E7EB?text=Keepsake"
                       alt="Keepsake project placeholder"
                       className="aspect-[4/3] w-full cursor-pointer rounded-xl object-cover transition-transform duration-500 hover:scale-[1.02]"
                     />
@@ -356,7 +356,7 @@ export default function Page() {
                   </div>
                   <div className="mb-8">
                     <img
-                      src="https://placehold.co/1000x750/e5e7eb/6b7280?text=SwiSekai"
+                      src="https://placehold.co/1000x750/27272A/E5E7EB?text=SwiSekai"
                       alt="SwiSekai project placeholder"
                       className="aspect-[4/3] w-full cursor-pointer rounded-xl object-cover transition-transform duration-500 hover:scale-[1.02]"
                     />
@@ -408,7 +408,7 @@ export default function Page() {
                   </div>
                   <div className="mb-8">
                     <img
-                      src="https://placehold.co/1000x750/e5e7eb/6b7280?text=Memmy"
+                      src="https://placehold.co/1000x750/27272A/E5E7EB?text=Memmy"
                       alt="Memmy project placeholder"
                       className="aspect-[4/3] w-full cursor-pointer rounded-xl object-cover transition-transform duration-500 hover:scale-[1.02]"
                     />

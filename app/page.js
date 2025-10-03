@@ -277,20 +277,19 @@ export default function Page() {
       >
         <div className="mx-auto max-w-3xl px-6 md:px-8">
           {/* Header */}
-          <header className="flex items-center justify-between py-8">
-            <div>
-              <a
-                href="https://youtube.com"
+          <header className="flex flex-wrap items-center gap-3 py-6 justify-center md:justify-between">
+            <div className="w-full text-center md:w-auto md:text-left">
+              <span
                 className={`font-syne text-2xl font-extrabold ${
                   isDark ? 'text-zinc-100' : ''
                 }`}
               >
                 Agustio M.
-              </a>
+              </span>
             </div>
-            <div className="flex items-center space-x-4 md:space-x-8">
+            <div className="flex w-full flex-wrap items-center justify-center gap-4 md:w-auto md:justify-end md:gap-8">
               <nav>
-                <ul className="flex space-x-6 md:space-x-8">
+                <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm sm:text-base md:gap-x-8">
                   <li>
                     <a
                       href="#about"
@@ -485,7 +484,7 @@ export default function Page() {
                         albums.
                       </p>
                       <ul
-                        className={`list-inside list-disc space-y-2 ${
+                        className={`list-disc space-y-2 pl-5 ${
                           isDark ? 'text-zinc-400' : 'text-slate-700'
                         }`}
                       >
@@ -504,7 +503,7 @@ export default function Page() {
                       </ul>
                       <div className="mt-6 flex gap-3">
                         <a
-                          href="#"
+                          href="https://apps.apple.com/id/app/keepsake-quick-album-camera/id6746714682"
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label="View Keepsake"
@@ -568,7 +567,7 @@ export default function Page() {
                       A macOS learning platform that teaches Swift.
                     </p>
                     <ul
-                      className={`inline-block list-inside list-disc space-y-2 text-left ${
+                      className={`inline-block list-disc space-y-2 pl-5 text-left ${
                         isDark ? 'text-zinc-400' : 'text-slate-700'
                       }`}
                     >
@@ -587,7 +586,7 @@ export default function Page() {
                     </ul>
                     <div className="mt-6 flex justify-end gap-3">
                       <a
-                        href="#"
+                        href="https://apps.apple.com/id/app/swisekai/id6751531464?mt=12%20SwiSekai"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="View SwiSekai"
@@ -651,7 +650,7 @@ export default function Page() {
                         access.
                       </p>
                       <ul
-                        className={`list-inside list-disc space-y-2 ${
+                        className={`list-disc space-y-2 pl-5 ${
                           isDark ? 'text-zinc-400' : 'text-slate-700'
                         }`}
                       >
@@ -670,7 +669,7 @@ export default function Page() {
                       </ul>
                       <div className="mt-6 flex gap-3">
                         <a
-                          href="#"
+                          href="https://apps.apple.com/id/app/memmy-smart-checklists/id6745719250"
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label="View Memmy"

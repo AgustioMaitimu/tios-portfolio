@@ -304,9 +304,7 @@ export default function Page() {
                     <img
                       src="https://placehold.co/1000x750/e0e0e0/b0b0b0?text=Keepsake"
                       alt="Keepsake project placeholder"
-                      className={`aspect-[4/3] w-full cursor-pointer rounded-xl object-cover transition-transform duration-500 hover:scale-[1.02] ${
-                        isDark ? 'brightness-90' : ''
-                      }`}
+                      className="aspect-[4/3] w-full cursor-pointer rounded-xl object-cover transition-transform duration-500 hover:scale-[1.02]"
                     />
                   </div>
                   <div className="max-w-2xl">
@@ -360,9 +358,7 @@ export default function Page() {
                     <img
                       src="https://placehold.co/1000x750/e0e0e0/b0b0b0?text=SwiSekai"
                       alt="SwiSekai project placeholder"
-                      className={`aspect-[4/3] w-full cursor-pointer rounded-xl object-cover transition-transform duration-500 hover:scale-[1.02] ${
-                        isDark ? 'brightness-90' : ''
-                      }`}
+                      className="aspect-[4/3] w-full cursor-pointer rounded-xl object-cover transition-transform duration-500 hover:scale-[1.02]"
                     />
                   </div>
                   <div className="ml-auto max-w-2xl text-right">
@@ -414,9 +410,7 @@ export default function Page() {
                     <img
                       src="https://placehold.co/1000x750/e0e0e0/b0b0b0?text=Memmy"
                       alt="Memmy project placeholder"
-                      className={`aspect-[4/3] w-full cursor-pointer rounded-xl object-cover transition-transform duration-500 hover:scale-[1.02] ${
-                        isDark ? 'brightness-90' : ''
-                      }`}
+                      className="aspect-[4/3] w-full cursor-pointer rounded-xl object-cover transition-transform duration-500 hover:scale-[1.02]"
                     />
                   </div>
                   <div className="max-w-2xl">

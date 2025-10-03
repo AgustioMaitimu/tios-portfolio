@@ -114,6 +114,14 @@ export default function Page() {
   const closeViewer = () => setViewerOpen(false)
 
   useEffect(() => {
+    // Keep the <html> background in sync with theme to avoid white edges
+    try {
+      const root = document.documentElement
+      root.classList.toggle('theme-dark', isDark)
+    } catch {}
+  }, [isDark])
+
+  useEffect(() => {
     if (!viewerOpen) return
     const onKey = (e) => {
       if (e.key === 'Escape') setViewerOpen(false)

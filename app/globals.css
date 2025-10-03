@@ -6,10 +6,17 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-/* Prevent page overscroll/bounce and horizontal scroll */
+/* Prevent page overscroll/bounce and horizontal scroll; match background to theme */
 html, body {
   overscroll-behavior: none;
   overflow-x: hidden;
+  background-color: #f9fafb; /* Tailwind gray-50 */
+}
+
+/* Dark theme background when `.theme-dark` is on <html> */
+.theme-dark,
+.theme-dark body {
+  background-color: #18181b; /* Tailwind zinc-900 */
 }
 
 .font-syne {

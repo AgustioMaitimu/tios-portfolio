@@ -375,7 +375,7 @@ export default function Page() {
             <section id="about" className="reveal py-16 md:py-32">
               <div className="mx-auto max-w-2xl space-y-8 md:space-y-12">
                 <p
-                  className={`mx-auto max-w-[34ch] sm:max-w-[50ch] text-base sm:text-lg md:text-xl leading-relaxed font-medium ${
+                  className={`mx-auto max-w-[34ch] text-base leading-relaxed font-medium sm:max-w-[50ch] sm:text-lg md:text-xl ${
                     isDark ? 'text-zinc-300' : 'text-slate-800'
                   }`}
                 >
@@ -387,13 +387,13 @@ export default function Page() {
                   deliver products in fast-paced, iterative cycles.
                 </p>
                 <div
-                  className={`mx-auto max-w-[48ch] sm:max-w-[60ch] space-y-6 border-l pl-4 sm:pl-6 md:border-l-2 md:pl-8 ${
+                  className={`mx-auto max-w-[48ch] space-y-6 border-l pl-4 sm:max-w-[60ch] sm:pl-6 md:border-l-2 md:pl-8 ${
                     isDark ? 'border-zinc-700' : 'border-gray-200'
                   }`}
                 >
                   <div>
                     <h3
-                      className={`font-roboto-mono text-lg sm:text-xl font-medium tracking-tight ${
+                      className={`font-roboto-mono text-lg font-medium tracking-tight sm:text-xl ${
                         isDark ? 'text-zinc-100' : 'text-black'
                       }`}
                     >
@@ -421,7 +421,7 @@ export default function Page() {
                   </div>
                   <div>
                     <h3
-                      className={`font-roboto-mono text-lg sm:text-xl font-medium tracking-tight ${
+                      className={`font-roboto-mono text-lg font-medium tracking-tight sm:text-xl ${
                         isDark ? 'text-zinc-100' : 'text-black'
                       }`}
                     >
@@ -456,7 +456,7 @@ export default function Page() {
                 <div className="reveal">
                   <div className="mb-8 flex items-baseline justify-center md:justify-between">
                     <h3
-                      className={`font-syne text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight text-center md:text-left ${
+                      className={`font-syne text-center text-4xl leading-tight font-extrabold sm:text-5xl md:text-left md:text-7xl ${
                         isDark ? 'text-zinc-100' : ''
                       }`}
                     >
@@ -540,7 +540,7 @@ export default function Page() {
                 <div className="reveal">
                   <div className="mb-8 flex items-baseline justify-center md:justify-between">
                     <h3
-                      className={`font-syne text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight text-center md:text-left ${
+                      className={`font-syne text-center text-4xl leading-tight font-extrabold sm:text-5xl md:text-left md:text-7xl ${
                         isDark ? 'text-zinc-100' : ''
                       }`}
                     >
@@ -620,7 +620,7 @@ export default function Page() {
                 <div className="reveal">
                   <div className="mb-8 flex items-baseline justify-center md:justify-between">
                     <h3
-                      className={`font-syne text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight text-center md:text-left ${
+                      className={`font-syne text-center text-4xl leading-tight font-extrabold sm:text-5xl md:text-left md:text-7xl ${
                         isDark ? 'text-zinc-100' : ''
                       }`}
                     >
@@ -705,7 +705,7 @@ export default function Page() {
             {/* Contact Section */}
             <section id="contact" className="py-20 text-center md:py-48">
               <h2
-                className={`reveal font-syne mb-8 text-4xl sm:text-5xl md:text-7xl leading-tight font-extrabold tracking-tighter ${
+                className={`reveal font-syne mb-8 text-4xl leading-tight font-extrabold tracking-tighter sm:text-5xl md:text-7xl ${
                   isDark ? 'text-zinc-100' : ''
                 }`}
                 data-reveal-threshold="0.5"
@@ -717,7 +717,7 @@ export default function Page() {
               <div className="flex flex-col items-center justify-center gap-6">
                 <a
                   href="mailto:agustiomaitimu.apple@gmail.com"
-                  className={`reveal link-underline text-xl sm:text-2xl md:text-3xl font-medium ${
+                  className={`reveal link-underline text-xl font-medium sm:text-2xl md:text-3xl ${
                     isDark ? 'text-zinc-300' : ''
                   }`}
                   data-reveal-threshold="0.6"
@@ -727,7 +727,7 @@ export default function Page() {
                 <a
                   href="/resume.pdf"
                   download
-                  className={`reveal link-underline text-lg sm:text-xl md:text-2xl font-medium ${
+                  className={`reveal link-underline text-lg font-medium sm:text-xl md:text-2xl ${
                     isDark ? 'text-zinc-400' : ''
                   }`}
                   data-reveal-threshold="0.7"

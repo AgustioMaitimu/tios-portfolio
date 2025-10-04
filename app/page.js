@@ -725,7 +725,7 @@ export default function Page() {
                   agustiomaitimu.apple@gmail.com
                 </a>
                 <a
-                  href="/resume.pdf"
+                  href="/resume.docx"
                   download
                   className={`reveal link-underline text-lg font-medium sm:text-xl md:text-2xl ${
                     isDark ? 'text-zinc-400' : ''
